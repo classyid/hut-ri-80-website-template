@@ -46,7 +46,7 @@
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/classyid/hut-ri-80-website-template.git
-cd indonesia-independence-template
+cd hut-ri-80-website-template
 ```
 
 ### 2. Konfigurasi Data
