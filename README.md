@@ -45,12 +45,12 @@
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/username/indonesia-independence-template.git
+git clone https://github.com/classyid/hut-ri-80-website-template.git
 cd indonesia-independence-template
 ```
 
 ### 2. Konfigurasi Data
-Edit file `config.js` atau langsung di dalam HTML pada bagian `SITE_CONFIG`:
+Edit langsung di dalam HTML pada bagian `SITE_CONFIG`:
 
 ```javascript
 const SITE_CONFIG = {
