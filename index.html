@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags - Will be populated by JavaScript -->
+    <title id="page-title">HUT RI ke-80</title>
+    <meta name="description" id="page-description" content="">
+    <meta name="keywords" id="page-keywords" content="">
+    <meta name="author" id="page-author" content="">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" id="og-title" content="">
+    <meta property="og:description" id="og-description" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitter-title" content="">
+    <meta name="twitter:description" id="twitter-description" content="">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ED1C24'/><text x='50' y='65' text-anchor='middle' fill='white' font-size='40' font-weight='bold'>80</text></svg>">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'merah-indonesia': '#ED1C24',
+                        'putih-indonesia': '#FFFFFF',
+                        'hitam-indonesia': '#000000'
+                    },
+                    fontFamily: {
+                        'barlow': ['Barlow', 'sans-serif'],
+                        'barlow-condensed': ['Barlow Semi Condensed', 'sans-serif']
+                    }
+                }
+            }
+        }
+
+        // ========================================
+        // CONFIGURATION SYSTEM
+        // ========================================
+        const SITE_CONFIG = {
+            // Basic Information
+            organization: {
+                name: "RW 05 Makmur Jaya",
+                fullName: "Rukun Warga 05 Makmur Jaya",
+                type: "RW", // RT, RW, Kelurahan, Desa, etc.
+                number: "05",
+                area: "Makmur Jaya"
+            },
+            
+            // Contact Information
+            contact: {
+                address: "Jl. Kemerdekaan No. 17, Makmur Jaya",
+                city: "Surakarta",
+                province: "Jawa Tengah",
+                phone: "0271-123-4567",
+                email: "rw05makmurajaya@gmail.com",
+                coordinates: {
+                    lat: -7.5759,
+                    lng: 110.8267
+                }
+            },
+            
+            // Event Configuration
+            events: {
+                competition: {
+                    date: "17 Agustus 2025",
+                    time: "08:00 - 16:00 WIB",
+                    location: "Lapangan Olahraga RW 05",
+                    budget: 850000,
+                    categories: [
+                        "Balap Karung", "Panjat Pinang", "Tarik Tambang", 
+                        "Lomba Makan Kerupuk", "Estafet Air", "Lomba Kelereng",
+                        "Lomba Joget", "Futsal Mini"
+                    ]
+                },
+                healthWalk: {
+                    date: "24 Agustus 2025", 
+                    time: "06:00 - 09:00 WIB",
+                    location: "Start: Balai RW 05",
+                    budget: 4500000
+                }
+            },
+            
+            // Committee Structure
+            committee: {
+                leadership: [
+                    { position: "Ketua", name: "Budi Santoso", area: "Makmur Jaya" },
+                    { position: "Wakil Ketua 1", name: "Sari Indah", area: "Blok A" },
+                    { position: "Wakil Ketua 2", name: "Ahmad Rizki", area: "Blok B" },
+                    { position: "Sekretaris", name: "Maya Sari", area: "Blok C" },
+                    { position: "Bendahara", name: "Dedi Kurniawan", area: "Blok D" }
+                ],
+                sections: {
+                    humas: [
+                        { name: "Rina Marlina", area: "Blok A" },
+                        { name: "Joko Widodo", area: "Blok B" }
+                    ],
+                    kegiatan: [
+                        { name: "Fitri Handayani", area: "Blok A" },
+                        { name: "Agus Setiawan", area: "Blok B" },
+                        { name: "Lisa Permata", area: "Blok C" },
+                        { name: "Roni Prasetyo", area: "Blok D" },
+                        { name: "Dewi Lestari", area: "Blok A" },
+                        { name: "Hendra Gunawan", area: "Blok B" }
+                    ],
+                    dokumentasi: [
+                        { name: "Rio Aditya", area: "Blok C" },
+                        { name: "Siska Amelia", area: "Blok D" }
+                    ],
+                    perlengkapan: [
+                        { name: "Bambang Sujatmiko", area: "Blok A" },
+                        { name: "Wati Suryani", area: "Blok B" },
+                        { name: "Fajar Nugroho", area: "Blok C" },
+                        { name: "Novi Astuti", area: "Blok D" },
+                        { name: "Teguh Prakoso", area: "Blok A" },
+                        { name: "Ratna Sari", area: "Blok B" },
+                        { name: "Indra Wijaya", area: "Blok C" }
+                    ],
+                    keamanan: [
+                        { name: "Yudi Hermawan", area: "Blok A" },
+                        { name: "Eko Purnomo", area: "Blok B" }
+                    ],
+                    konsumsi: [
+                        { name: "Ibu Lastri", area: "Blok C" },
+                        { name: "Pak Guntur", area: "Blok D" },
+                        { name: "Tim PKK RW 05", area: "Semua Blok" }
+                    ]
+                }
+            },
+            
+            // Budget Configuration
+            budget: {
+                competition: {
+                    items: [
+                        { name: "8 Jenis Lomba", detail: "@35.000 x 3 kategori", amount: 850000 }
+                    ]
+                },
+                healthWalk: {
+                    items: [
+                        { name: "Tenda", amount: 0, note: "Pakai sendiri" },
+                        { name: "Panggung", amount: 500000, note: "" },
+                        { name: "Sound Sistem", amount: 0, note: "Pakai sendiri" },
+                        { name: "Banner", amount: 350000, note: "" },
+                        { name: "Minuman", amount: 450000, note: "" },
+                        { name: "Doorprize", amount: 2800000, note: "" },
+                        { name: "MC", amount: 200000, note: "Jasa profesional" },
+                        { name: "Kopon Jalan Sehat", amount: 175000, note: "@7000 x 25" },
+                        { name: "Lain-lain", amount: 525000, note: "" }
+                    ]
+                },
+                distribution: [
+                    { area: "Blok A & B", amount: 1800000, description: "Jalan sehat" },
+                    { area: "Blok C & D", amount: 2000000, description: "Jalan sehat dan perlombaan" },
+                    { area: "Area Umum", amount: 1200000, description: "Fasilitas bersama" }
+                ]
+            },
+            
+            // Social Media & Contact
+            social: {
+                facebook: "#",
+                instagram: "#", 
+                youtube: "#",
+                whatsapp: "6271123456789",
+                email: "rw05makmurajaya@gmail.com"
+            },
+            
+            // Customization
+            theme: {
+                primaryColor: "#ED1C24",
+                secondaryColor: "#FFFFFF", 
+                accentColor: "#000000",
+                logoText: "80"
+            }
+        };
+    </script>
+    
+    <style>
+        .logo-80 {
+            background: linear-gradient(135deg, #ED1C24 0%, #ff4757 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .gradient-red {
+            background: linear-gradient(135deg, #ED1C24 0%, #dc2626 100%);
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .gallery-item {
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="font-barlow text-gray-900 overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-lg" data-aos="fade-down">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-merah-indonesia rounded-full flex items-center justify-center">
+                        <span class="text-white font-barlow-condensed font-bold text-xl" id="nav-logo">80</span>
+                    </div>
+                    <div>
+                        <h1 class="font-barlow-condensed font-bold text-lg text-merah-indonesia" id="nav-title">LOADING...</h1>
+                        <p class="text-xs text-gray-600">HUT RI ke-80</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl text-merah-indonesia"></i>
+                </button>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#beranda" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-home mr-2"></i>Beranda</a>
+                    <a href="#kegiatan" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-calendar mr-2"></i>Kegiatan</a>
+                    <a href="#panitia" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-users mr-2"></i>Panitia</a>
+                    <a href="#anggaran" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-money-bill mr-2"></i>Anggaran</a>
+                    <a href="#lokasi" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-map-marker-alt mr-2"></i>Lokasi</a>
+                    <a href="#galeri" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-images mr-2"></i>Galeri</a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden pb-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#beranda" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-home mr-2"></i>Beranda</a>
+                    <a href="#kegiatan" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-calendar mr-2"></i>Kegiatan</a>
+                    <a href="#panitia" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-users mr-2"></i>Panitia</a>
+                    <a href="#anggaran" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-money-bill mr-2"></i>Anggaran</a>
+                    <a href="#lokasi" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-map-marker-alt mr-2"></i>Lokasi</a>
+                    <a href="#galeri" class="text-gray-700 hover:text-merah-indonesia transition-colors"><i class="fas fa-images mr-2"></i>Galeri</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="min-h-screen gradient-red flex items-center justify-center relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full animate-pulse"></div>
+            <div class="absolute top-1/4 right-20 w-24 h-24 border-4 border-white rounded-full animate-pulse delay-300"></div>
+            <div class="absolute bottom-1/3 left-1/4 w-20 h-20 border-4 border-white rounded-full animate-pulse delay-700"></div>
+            <div class="absolute bottom-20 right-1/3 w-28 h-28 border-4 border-white rounded-full animate-pulse delay-1000"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <!-- Logo 80 -->
+            <div class="floating mb-8" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="w-48 h-24 mx-auto bg-white rounded-full shadow-2xl flex items-center justify-center">
+                    <span class="font-barlow-condensed font-bold text-6xl text-merah-indonesia" id="hero-logo">80</span>
+                </div>
+            </div>
+            
+            <!-- Main Title -->
+            <h1 class="font-barlow-condensed font-bold text-4xl md:text-6xl text-white mb-6 tracking-wider" data-aos="fade-up" data-aos-delay="200">
+                DIRGAHAYU REPUBLIK INDONESIA
+            </h1>
+            
+            <!-- Tagline -->
+            <div class="text-white mb-8" data-aos="fade-up" data-aos-delay="400">
+                <h2 class="font-barlow-condensed font-semibold text-2xl md:text-4xl mb-4">
+                    Bersatu Berdaulat<br>
+                    Rakyat Sejahtera<br>
+                    Indonesia Maju
+                </h2>
+                <p class="text-xl md:text-2xl opacity-90" id="hero-subtitle">Loading...</p>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="600">
+                <a href="#kegiatan" class="bg-white text-merah-indonesia px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all hover-scale">
+                    <i class="fas fa-calendar-alt mr-2"></i>Lihat Kegiatan
+                </a>
+                <a href="#lokasi" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-merah-indonesia transition-all hover-scale">
+                    <i class="fas fa-map-marker-alt mr-2"></i>Lokasi Acara
+                </a>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16" data-aos="fade-up" data-aos-delay="800">
+                <div class="glass-effect rounded-lg p-6">
+                    <i class="fas fa-trophy text-3xl text-white mb-2"></i>
+                    <h3 class="text-2xl font-bold text-white" id="stats-competitions">8+</h3>
+                    <p class="text-white opacity-80">Jenis Lomba</p>
+                </div>
+                <div class="glass-effect rounded-lg p-6">
+                    <i class="fas fa-walking text-3xl text-white mb-2"></i>
+                    <h3 class="text-2xl font-bold text-white">1</h3>
+                    <p class="text-white opacity-80">Jalan Sehat</p>
+                </div>
+                <div class="glass-effect rounded-lg p-6">
+                    <i class="fas fa-users text-3xl text-white mb-2"></i>
+                    <h3 class="text-2xl font-bold text-white">500+</h3>
+                    <p class="text-white opacity-80">Peserta</p>
+                </div>
+                <div class="glass-effect rounded-lg p-6">
+                    <i class="fas fa-gifts text-3xl text-white mb-2"></i>
+                    <h3 class="text-2xl font-bold text-white">50+</h3>
+                    <p class="text-white opacity-80">Doorprize</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-merah-indonesia mb-8">Tentang Kegiatan</h2>
+                <p class="text-lg text-gray-700 mb-8 leading-relaxed" id="about-description">
+                    Loading description...
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                    <div class="text-center" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="w-20 h-20 bg-merah-indonesia rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-handshake text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">Kebersamaan</h3>
+                        <p class="text-gray-600" id="value-togetherness">Mempererat hubungan antar warga</p>
+                    </div>
+                    <div class="text-center" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="w-20 h-20 bg-merah-indonesia rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-flag text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">Nasionalisme</h3>
+                        <p class="text-gray-600">Menumbuhkan semangat cinta tanah air</p>
+                    </div>
+                    <div class="text-center" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="w-20 h-20 bg-merah-indonesia rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-trophy text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">Prestasi</h3>
+                        <p class="text-gray-600">Mengembangkan potensi dan bakat warga</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="kegiatan" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-merah-indonesia mb-4">
+                    <i class="fas fa-calendar-alt mr-3"></i>Jadwal Kegiatan
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Dua kegiatan utama yang telah direncanakan dengan matang untuk merayakan kemerdekaan bersama
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Perlombaan -->
+                <div class="gradient-red rounded-2xl p-8 text-white relative overflow-hidden hover-scale" data-aos="fade-right">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-16 translate-x-16"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-trophy text-merah-indonesia text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-barlow-condensed font-bold text-2xl">PERLOMBAAN</h3>
+                                <p class="opacity-90">Berbagai kategori lomba menarik</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-calendar text-white mr-3"></i>
+                                <span class="text-3xl font-bold" id="competition-date">Loading...</span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-white mr-3"></i>
+                                <span id="competition-time">Loading...</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-white mr-3 mt-1"></i>
+                                <span id="competition-location">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white/20 rounded-lg p-4 mb-6">
+                            <h4 class="font-semibold mb-2">Kategori Lomba:</h4>
+                            <ul class="grid grid-cols-2 gap-2 text-sm" id="competition-categories">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-yellow-400 text-gray-900 rounded-lg p-3">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <strong>Info:</strong> Informasi lebih lanjut dapat menghubungi panitia
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Jalan Sehat -->
+                <div class="bg-white border-4 border-merah-indonesia rounded-2xl p-8 relative overflow-hidden hover-scale" data-aos="fade-left">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-merah-indonesia opacity-10 rounded-full -translate-y-16 translate-x-16"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-merah-indonesia rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-walking text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-barlow-condensed font-bold text-2xl text-merah-indonesia">JALAN SEHAT</h3>
+                                <p class="text-gray-600">Olahraga bersama keluarga</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-calendar text-merah-indonesia mr-3"></i>
+                                <span class="text-3xl font-bold text-merah-indonesia" id="healthwalk-date">Loading...</span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-merah-indonesia mr-3"></i>
+                                <span id="healthwalk-time">Loading...</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-merah-indonesia mr-3 mt-1"></i>
+                                <span class="text-gray-700" id="healthwalk-location">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                            <h4 class="font-semibold mb-2 text-merah-indonesia">Fasilitas:</h4>
+                            <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Snack & Minuman</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Doorprize Menarik</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Dokumentasi</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>MC Profesional</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>Sound System</li>
+                                <li><i class="fas fa-check text-green-500 mr-2"></i>P3K</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-100 text-green-800 rounded-lg p-3">
+                            <i class="fas fa-users mr-2"></i>
+                            <strong>Info:</strong> Terbuka untuk seluruh keluarga dan warga sekitar
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Committee Section -->
+    <section id="panitia" class="py-20 bg-gradient-to-b from-merah-indonesia via-merah-indonesia to-red-700">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-white mb-4">
+                    <i class="fas fa-users mr-3"></i>SUSUNAN PANITIA
+                </h2>
+                <p class="text-white/90 text-lg max-w-2xl mx-auto">
+                    Tim solid yang telah disiapkan untuk mensukseskan peringatan HUT RI ke-80
+                </p>
+            </div>
+            
+            <div id="committee-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Section -->
+    <section id="anggaran" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-merah-indonesia mb-4">
+                    <i class="fas fa-money-bill-wave mr-3"></i>RENCANA ANGGARAN
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Transparansi pengelolaan dana untuk kesuksesan acara kemerdekaan bersama
+                </p>
+            </div>
+
+            <!-- Budget Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-xl p-6 shadow-lg text-center hover-scale" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-trophy text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-barlow-condensed font-bold text-2xl text-green-600 mb-2" id="budget-competition-total">Rp 0</h3>
+                    <p class="text-gray-600">Total Anggaran Perlombaan</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-lg text-center hover-scale" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-walking text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-barlow-condensed font-bold text-2xl text-blue-600 mb-2" id="budget-healthwalk-total">Rp 0</h3>
+                    <p class="text-gray-600">Total Anggaran Jalan Sehat</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-lg text-center hover-scale" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-merah-indonesia rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calculator text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-barlow-condensed font-bold text-2xl text-merah-indonesia mb-2" id="budget-grand-total">Rp 0</h3>
+                    <p class="text-gray-600">Total Keseluruhan</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+                <!-- Anggaran Perlombaan -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-right">
+                    <div class="bg-green-500 p-6">
+                        <h3 class="font-barlow-condensed font-bold text-2xl text-white flex items-center">
+                            <i class="fas fa-trophy mr-3"></i>ANGGARAN PERLOMBAAN
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b-2 border-gray-200">
+                                        <th class="text-left py-3 font-semibold">Item</th>
+                                        <th class="text-right py-3 font-semibold">Anggaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="competition-budget-table">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anggaran Jalan Sehat -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-left">
+                    <div class="bg-blue-500 p-6">
+                        <h3 class="font-barlow-condensed font-bold text-2xl text-white flex items-center">
+                            <i class="fas fa-walking mr-3"></i>ANGGARAN JALAN SEHAT
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b-2 border-gray-200">
+                                        <th class="text-left py-2 font-semibold">Item</th>
+                                        <th class="text-right py-2 font-semibold">Biaya</th>
+                                        <th class="text-center py-2 font-semibold">Ket.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="healthwalk-budget-table" class="text-sm">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Distribution -->
+            <div class="mt-12 bg-gradient-to-r from-merah-indonesia to-red-600 rounded-2xl p-8 text-white" data-aos="fade-up">
+                <h3 class="font-barlow-condensed font-bold text-2xl mb-6 text-center">
+                    <i class="fas fa-chart-pie mr-3"></i>PEMBAGIAN BEBAN ANGGARAN
+                </h3>
+                <div id="budget-distribution" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                <div class="mt-6 bg-yellow-400 text-gray-900 rounded-lg p-4 text-center">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>Catatan:</strong> Anggaran dapat berubah apabila ada donatur atau sponsor tambahan
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="lokasi" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-merah-indonesia mb-4">
+                    <i class="fas fa-map-marker-alt mr-3"></i>LOKASI KEGIATAN
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Lokasi strategis dan mudah dijangkau untuk seluruh kegiatan kemerdekaan
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Map -->
+                <div class="order-2 lg:order-1" data-aos="fade-right">
+                    <div class="bg-gray-200 rounded-2xl overflow-hidden shadow-lg">
+                        <div id="map" class="map-container"></div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="bg-merah-indonesia text-white p-4 rounded-xl text-center">
+                            <i class="fas fa-clock text-2xl mb-2"></i>
+                            <h4 class="font-semibold">Jam Operasional</h4>
+                            <p class="text-sm">06:00 - 18:00 WIB</p>
+                        </div>
+                        <div class="bg-blue-500 text-white p-4 rounded-xl text-center">
+                            <i class="fas fa-parking text-2xl mb-2"></i>
+                            <h4 class="font-semibold">Parkir</h4>  
+                            <p class="text-sm">Area Luas Tersedia</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Info -->
+                <div class="order-1 lg:order-2" data-aos="fade-left">
+                    <div class="bg-gray-50 rounded-2xl p-8">
+                        <h3 class="font-barlow-condensed font-bold text-2xl text-merah-indonesia mb-6">Detail Lokasi</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-merah-indonesia rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2">Alamat Lengkap</h4>
+                                    <p class="text-gray-600" id="location-address">Loading...</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-route text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2">Akses Transportasi</h4>
+                                    <ul class="text-gray-600 space-y-1">
+                                        <li><i class="fas fa-car mr-2 text-blue-500"></i>Mobil pribadi (15 menit dari pusat kota)</li>
+                                        <li><i class="fas fa-motorcycle mr-2 text-green-500"></i>Motor (akses mudah)</li>
+                                        <li><i class="fas fa-bus mr-2 text-orange-500"></i>Angkutan umum tersedia</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-info-circle text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-lg mb-2">Fasilitas</h4>
+                                    <ul class="text-gray-600 space-y-1">
+                                        <li><i class="fas fa-restroom mr-2 text-blue-500"></i>Toilet umum</li>
+                                        <li><i class="fas fa-parking mr-2 text-green-500"></i>Area parkir luas</li>
+                                        <li><i class="fas fa-store mr-2 text-orange-500"></i>Warung makan terdekat</li>
+                                        <li><i class="fas fa-hospital mr-2 text-red-500"></i>Pos kesehatan</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 bg-merah-indonesia text-white p-6 rounded-xl">
+                            <h4 class="font-semibold text-lg mb-3">
+                                <i class="fas fa-phone mr-2"></i>Kontak Informasi
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm" id="location-contacts">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold transition-colors" onclick="openGoogleMaps()">
+                            <i class="fas fa-directions mr-2"></i>Buka di Google Maps
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeri" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-merah-indonesia mb-4">
+                    <i class="fas fa-images mr-3"></i>GALERI KEGIATAN
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Dokumentasi kegiatan kemerdekaan tahun-tahun sebelumnya dan persiapan acara tahun ini
+                </p>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a8e?w=300&h=200&fit=crop" alt="Perlombaan Balap Karung" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Balap Karung 2024</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop" alt="Jalan Sehat" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Jalan Sehat Bersama</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="300">
+                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=300&h=200&fit=crop" alt="Tarik Tambang" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Tarik Tambang</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="400">
+                    <img src="https://images.unsplash.com/photo-1587814113193-3c6a4e6b4e5c?w=300&h=200&fit=crop" alt="Panjat Pinang" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Panjat Pinang</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="500">
+                    <img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=300&h=200&fit=crop" alt="Lomba Makan" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Lomba Makan Kerupuk</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="600">
+                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=300&h=200&fit=crop" alt="Persiapan Panggung" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Persiapan Panggung</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="700">
+                    <img src="https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=300&h=200&fit=crop" alt="Dekorasi Merah Putih" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Dekorasi Merah Putih</h4>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale" data-aos="zoom-in" data-aos-delay="800">
+                    <img src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=300&h=200&fit=crop" alt="Gotong Royong" class="gallery-item w-full">
+                    <div class="p-3">
+                        <h4 class="font-semibold text-sm">Gotong Royong Warga</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Section -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg" data-aos="fade-up">
+                <div class="text-center mb-8">
+                    <h3 class="font-barlow-condensed font-bold text-2xl text-merah-indonesia mb-4">
+                        <i class="fab fa-youtube mr-3 text-red-600"></i>CHANNEL YOUTUBE
+                    </h3>
+                    <p class="text-gray-600" id="youtube-description">Saksikan dokumentasi lengkap kegiatan kemerdekaan dan acara lainnya</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-100 rounded-xl overflow-hidden hover-scale">
+                        <div class="aspect-video bg-red-600 flex items-center justify-center">
+                            <i class="fab fa-youtube text-white text-6xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg mb-2">HUT RI ke-79 Highlights</h4>
+                            <p class="text-gray-600 text-sm mb-3">Dokumentasi lengkap perayaan kemerdekaan tahun lalu</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500"><i class="fas fa-eye mr-1"></i>1.2K views</span>
+                                <button class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors">
+                                    <i class="fas fa-play mr-1"></i>Tonton
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-100 rounded-xl overflow-hidden hover-scale">
+                        <div class="aspect-video bg-blue-600 flex items-center justify-center">
+                            <i class="fab fa-youtube text-white text-6xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg mb-2">Persiapan HUT RI ke-80</h4>
+                            <p class="text-gray-600 text-sm mb-3">Behind the scene persiapan acara kemerdekaan 2025</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500"><i class="fas fa-eye mr-1"></i>856 views</span>
+                                <button class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors">
+                                    <i class="fas fa-play mr-1"></i>Tonton
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors" onclick="window.open(SITE_CONFIG.social.youtube, '_blank')">
+                        <i class="fab fa-youtube mr-2"></i>Kunjungi Channel YouTube
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 gradient-red">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-barlow-condensed font-bold text-4xl text-white mb-4">
+                    <i class="fas fa-phone-alt mr-3"></i>HUBUNGI KAMI
+                </h2>
+                <p class="text-white/90 text-lg max-w-2xl mx-auto">
+                    Ada pertanyaan atau ingin berpartisipasi? Jangan ragu untuk menghubungi panitia
+                </p>
+            </div>
+
+            <div id="contact-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Social Media -->
+            <div class="text-center mt-16" data-aos="fade-up">
+                <h3 class="font-barlow-condensed font-bold text-2xl text-white mb-6">Ikuti Media Sosial Kami</h3>
+                <div class="flex justify-center space-x-6" id="social-media-links">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Logo & Description -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-16 h-16 bg-merah-indonesia rounded-full flex items-center justify-center">
+                            <span class="text-white font-barlow-condensed font-bold text-2xl" id="footer-logo">80</span>
+                        </div>
+                        <div>
+                            <h1 class="font-barlow-condensed font-bold text-2xl text-merah-indonesia" id="footer-title">Loading...</h1>
+                            <p class="text-gray-400">HUT RI ke-80 • 2025</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4 leading-relaxed" id="footer-description">
+                        Loading description...
+                    </p>
+                    <div class="text-sm text-gray-400" id="footer-contact">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-barlow-condensed font-bold text-lg mb-4 text-merah-indonesia">Menu Utama</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#beranda" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-home mr-2"></i>Beranda</a></li>
+                        <li><a href="#kegiatan" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-calendar mr-2"></i>Kegiatan</a></li>
+                        <li><a href="#panitia" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-users mr-2"></i>Panitia</a></li>
+                        <li><a href="#anggaran" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-money-bill mr-2"></i>Anggaran</a></li>
+                        <li><a href="#lokasi" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-map-marker-alt mr-2"></i>Lokasi</a></li>
+                        <li><a href="#galeri" class="text-gray-300 hover:text-white transition-colors"><i class="fas fa-images mr-2"></i>Galeri</a></li>
+                    </ul>
+                </div>
+
+                <!-- Important Info -->
+                <div>
+                    <h3 class="font-barlow-condensed font-bold text-lg mb-4 text-merah-indonesia">Info Penting</h3>
+                    <ul class="space-y-2 text-sm text-gray-300" id="footer-info">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm mb-4 md:mb-0" id="footer-copyright">
+                        Loading copyright...
+                    </p>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span>Dimiliki Bersama, Dirayakan Bersama</span>
+                        <div class="w-8 h-8 bg-merah-indonesia rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-xs">80</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-merah-indonesia text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-red-600 hover-scale z-50">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // ========================================
+        // INITIALIZATION FUNCTIONS
+        // ========================================
+        
+        function initializePage() {
+            updatePageMetadata();
+            updateHeroSection();
+            updateAboutSection();
+            updateScheduleSection();
+            updateCommitteeSection();
+            updateBudgetSection();
+            updateLocationSection();
+            updateContactSection();
+            updateFooter();
+            initializeEventListeners();
+        }
+
+        function updatePageMetadata() {
+            const org = SITE_CONFIG.organization;
+            const contact = SITE_CONFIG.contact;
+
+            document.getElementById('page-title').textContent = `HUT RI ke-80 ${org.name} | Peringatan Kemerdekaan Indonesia 2025`;
+            document.getElementById('page-description').content = `Peringatan HUT RI ke-80 ${org.name} dengan berbagai kegiatan perlombaan dan jalan sehat. Bergabunglah dalam semangat Bersatu Berdaulat, Rakyat Sejahtera, Indonesia Maju.`;
+            document.getElementById('page-keywords').content = `HUT RI 80, kemerdekaan indonesia, ${org.name}, perlombaan 17 agustus, jalan sehat, ${contact.city}`;
+            document.getElementById('page-author').content = org.name;
+
+            // Open Graph
+            document.getElementById('og-title').content = `HUT RI ke-80 ${org.name}`;
+            document.getElementById('og-description').content = `Peringatan Kemerdekaan Indonesia ke-80 dengan berbagai kegiatan meriah di ${org.name}`;
+
+            // Twitter Card
+            document.getElementById('twitter-title').content = `HUT RI ke-80 ${org.name}`;
+            document.getElementById('twitter-description').content = `Peringatan Kemerdekaan Indonesia ke-80 dengan berbagai kegiatan meriah di ${org.name}`;
+        }
+
+        function updateHeroSection() {
+            const org = SITE_CONFIG.organization;
+            document.getElementById('nav-title').textContent = org.name.toUpperCase();
+            document.getElementById('nav-logo').textContent = SITE_CONFIG.theme.logoText;
+            document.getElementById('hero-logo').textContent = SITE_CONFIG.theme.logoText;
+            document.getElementById('hero-subtitle').textContent = `${org.name} • Agustus 2025`;
+            document.getElementById('stats-competitions').textContent = `${SITE_CONFIG.events.competition.categories.length}+`;
+        }
+
+        function updateAboutSection() {
+            const org = SITE_CONFIG.organization;
+            document.getElementById('about-description').innerHTML = `
+                Dalam rangka memperingati Hari Ulang Tahun Kemerdekaan Republik Indonesia yang ke-80, 
+                <strong>${org.name}</strong> dengan bangga menggelar serangkaian kegiatan yang mengusung semangat 
+                <strong>"Bersatu Berdaulat, Rakyat Sejahtera, Indonesia Maju"</strong>. 
+                Kegiatan ini dirancang untuk mempererat tali silaturahmi antar warga, 
+                melestarikan nilai-nilai kebersamaan, dan merayakan kemerdekaan dengan penuh sukacita.
+            `;
+            document.getElementById('value-togetherness').textContent = `Mempererat hubungan antar warga ${org.name}`;
+        }
+
+        function updateScheduleSection() {
+            const events = SITE_CONFIG.events;
+            
+            // Competition
+            document.getElementById('competition-date').textContent = events.competition.date;
+            document.getElementById('competition-time').textContent = events.competition.time;
+            document.getElementById('competition-location').textContent = events.competition.location;
+            
+            const categoriesContainer = document.getElementById('competition-categories');
+            categoriesContainer.innerHTML = '';
+            events.competition.categories.forEach(category => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check mr-2"></i>${category}`;
+                categoriesContainer.appendChild(li);
+            });
+
+            // Health Walk
+            document.getElementById('healthwalk-date').textContent = events.healthWalk.date;
+            document.getElementById('healthwalk-time').textContent = events.healthWalk.time;
+            document.getElementById('healthwalk-location').textContent = events.healthWalk.location;
+        }
+
+        function updateCommitteeSection() {
+            const committee = SITE_CONFIG.committee;
+            const container = document.getElementById('committee-container');
+            container.innerHTML = '';
+
+            // Leadership
+            const leadershipCard = createCommitteeCard('PIMPINAN', 'fas fa-crown', 'merah-indonesia', committee.leadership);
+            container.appendChild(leadershipCard);
+
+            // Sections
+            const sectionConfigs = [
+                { key: 'humas', title: 'HUMAS', icon: 'fas fa-bullhorn', color: 'blue-500' },
+                { key: 'kegiatan', title: 'SIE. KEGIATAN', icon: 'fas fa-calendar-check', color: 'green-500' },
+                { key: 'dokumentasi', title: 'SIE. DOKUMENTASI', icon: 'fas fa-camera', color: 'purple-500' },
+                { key: 'perlengkapan', title: 'SIE. PERLENGKAPAN', icon: 'fas fa-tools', color: 'orange-500' },
+                { key: 'keamanan', title: 'SIE. KEAMANAN', icon: 'fas fa-shield-alt', color: 'red-600' },
+                { key: 'konsumsi', title: 'SIE. KONSUMSI', icon: 'fas fa-utensils', color: 'pink-500' }
+            ];
+
+            sectionConfigs.forEach((config, index) => {
+                const members = committee.sections[config.key] || [];
+                const card = createCommitteeCard(config.title, config.icon, config.color, members);
+                card.setAttribute('data-aos-delay', (index + 2) * 100);
+                container.appendChild(card);
+            });
+        }
+
+        function createCommitteeCard(title, icon, color, members) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-xl p-6 shadow-lg hover-scale';
+            card.setAttribute('data-aos', 'fade-up');
+
+            const colorClass = color === 'merah-indonesia' ? 'bg-merah-indonesia' : `bg-${color}`;
+            const textColorClass = color === 'merah-indonesia' ? 'text-merah-indonesia' : `text-${color.split('-')[0]}-600`;
+
+            let membersHtml = '';
+            members.forEach(member => {
+                if (typeof member === 'object') {
+                    membersHtml += `<li class="flex items-center"><i class="fas fa-user text-${color.split('-')[0]}-500 mr-2 text-sm"></i><strong>${member.position || ''}:</strong> ${member.name}${member.area ? ' (' + member.area + ')' : ''}</li>`;
+                } else {
+                    membersHtml += `<li class="flex items-center"><i class="fas fa-user text-${color.split('-')[0]}-500 mr-2 text-sm"></i>${member}</li>`;
+                }
+            });
+
+            card.innerHTML = `
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 ${colorClass} rounded-full flex items-center justify-center mr-3">
+                        <i class="${icon} text-white"></i>
+                    </div>
+                    <h3 class="font-barlow-condensed font-bold text-xl ${textColorClass}">${title}</h3>
+                </div>
+                <ul class="space-y-2 text-sm">
+                    ${membersHtml}
+                </ul>
+            `;
+
+            return card;
+        }
+
+        function updateBudgetSection() {
+            const budget = SITE_CONFIG.budget;
+            
+            // Calculate totals
+            const competitionTotal = budget.competition.items.reduce((sum, item) => sum + item.amount, 0);
+            const healthWalkTotal = budget.healthWalk.items.reduce((sum, item) => sum + item.amount, 0);
+            const grandTotal = competitionTotal + healthWalkTotal;
+
+            // Update overview
+            document.getElementById('budget-competition-total').textContent = formatCurrency(competitionTotal);
+            document.getElementById('budget-healthwalk-total').textContent = formatCurrency(healthWalkTotal);
+            document.getElementById('budget-grand-total').textContent = formatCurrency(grandTotal);
+
+            // Competition budget table
+            const compTable = document.getElementById('competition-budget-table');
+            compTable.innerHTML = '';
+            budget.competition.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-100';
+                row.innerHTML = `
+                    <td class="py-4">${item.name}<br><small class="text-gray-500">${item.detail || ''}</small></td>
+                    <td class="text-right py-4 font-bold text-green-600">${formatCurrency(item.amount)}</td>
+                `;
+                compTable.appendChild(row);
+            });
+
+            // Health walk budget table
+            const hwTable = document.getElementById('healthwalk-budget-table');
+            hwTable.innerHTML = '';
+            budget.healthWalk.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-100';
+                row.innerHTML = `
+                    <td class="py-2">${item.name}</td>
+                    <td class="text-right py-2 ${item.amount > 0 ? 'font-semibold' : ''}">${item.amount > 0 ? formatCurrency(item.amount) : '-'}</td>
+                    <td class="text-center py-2">${item.amount === 0 ? '<i class="fas fa-check text-green-500" title="' + item.note + '"></i>' : (item.note || '-')}</td>
+                `;
+                hwTable.appendChild(row);
+            });
+
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'bg-blue-50 font-bold';
+            totalRow.innerHTML = `
+                <td class="py-3 text-blue-700">TOTAL</td>
+                <td class="text-right py-3 text-blue-700">${formatCurrency(healthWalkTotal)}</td>
+                <td class="text-center py-3">-</td>
+            `;
+            hwTable.appendChild(totalRow);
+
+            // Budget distribution
+            const distContainer = document.getElementById('budget-distribution');
+            distContainer.innerHTML = '';
+            budget.distribution.forEach(dist => {
+                const div = document.createElement('div');
+                div.className = 'bg-white/20 rounded-xl p-6 text-center';
+                div.innerHTML = `
+                    <i class="fas fa-home text-4xl mb-4"></i>
+                    <h4 class="font-semibold text-xl mb-2">${dist.area}</h4>
+                    <div class="text-3xl font-bold mb-2">${formatCurrency(dist.amount)}</div>
+                    <p class="text-sm opacity-90">${dist.description}</p>
+                `;
+                distContainer.appendChild(div);
+            });
+        }
+
+        function updateLocationSection() {
+            const contact = SITE_CONFIG.contact;
+            const committee = SITE_CONFIG.committee;
+
+            document.getElementById('location-address').innerHTML = `
+                ${contact.address}<br>
+                ${contact.city}, ${contact.province}
+            `;
+
+            // Contact info
+            const contactsContainer = document.getElementById('location-contacts');
+            contactsContainer.innerHTML = `
+                <div>
+                    <p><strong>Ketua Panitia:</strong></p>
+                    <p><i class="fas fa-user mr-2"></i>${committee.leadership[0].name}</p>
+                    <p><i class="fas fa-phone mr-2"></i>${contact.phone}</p>
+                </div>
+                <div>
+                    <p><strong>Sekretaris:</strong></p>
+                    <p><i class="fas fa-user mr-2"></i>${committee.leadership.find(l => l.position === 'Sekretaris')?.name || 'N/A'}</p>
+                    <p><i class="fas fa-envelope mr-2"></i>${contact.email}</p>
+                </div>
+            `;
+        }
+
+        function updateContactSection() {
+            const committee = SITE_CONFIG.committee;
+            const contact = SITE_CONFIG.contact;
+            const container = document.getElementById('contact-container');
+            
+            container.innerHTML = '';
+
+            // Key contacts
+            const keyContacts = [
+                { 
+                    title: 'Ketua Panitia', 
+                    name: committee.leadership[0].name, 
+                    icon: 'fas fa-crown', 
+                    color: 'yellow-400',
+                    phone: contact.phone
+                },
+                { 
+                    title: 'Sekretaris', 
+                    name: committee.leadership.find(l => l.position === 'Sekretaris')?.name || 'N/A', 
+                    icon: 'fas fa-pen', 
+                    color: 'blue-400',
+                    phone: contact.phone.replace(/\d{4}$/, '5678')
+                },
+                { 
+                    title: 'Humas', 
+                    name: committee.sections.humas[0]?.name || 'N/A', 
+                    icon: 'fas fa-bullhorn', 
+                    color: 'purple-400',
+                    phone: contact.phone.replace(/\d{4}$/, '9012')
+                }
+            ];
+
+            keyContacts.forEach((contact, index) => {
+                const div = document.createElement('div');
+                div.className = 'glass-effect rounded-xl p-6 text-white text-center hover-scale';
+                div.setAttribute('data-aos', 'zoom-in');
+                div.setAttribute('data-aos-delay', (index + 1) * 100);
+                
+                div.innerHTML = `
+                    <div class="w-16 h-16 bg-${contact.color} rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="${contact.icon} text-gray-900 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-xl mb-2">${contact.title}</h3>
+                    <h4 class="font-bold text-lg mb-3">${contact.name}</h4>
+                    <div class="space-y-2">
+                        <a href="tel:${contact.phone}" class="flex items-center justify-center text-sm hover:text-yellow-300 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>${contact.phone}
+                        </a>
+                        <a href="https://wa.me/62${contact.phone.substring(1)}" class="flex items-center justify-center text-sm hover:text-green-300 transition-colors">
+                            <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                        </a>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            // Social media links
+            const socialContainer = document.getElementById('social-media-links');
+            socialContainer.innerHTML = '';
+            
+            const socialPlatforms = [
+                { name: 'facebook', icon: 'fab fa-facebook-f', color: 'blue-600' },
+                { name: 'instagram', icon: 'fab fa-instagram', color: 'pink-600' },
+                { name: 'youtube', icon: 'fab fa-youtube', color: 'red-600' },
+                { name: 'whatsapp', icon: 'fab fa-whatsapp', color: 'green-600' }
+            ];
+
+            socialPlatforms.forEach(platform => {
+                if (SITE_CONFIG.social[platform.name] && SITE_CONFIG.social[platform.name] !== '#') {
+                    const a = document.createElement('a');
+                    a.href = platform.name === 'whatsapp' ? `https://wa.me/${SITE_CONFIG.social[platform.name]}` : SITE_CONFIG.social[platform.name];
+                    a.className = `w-12 h-12 bg-${platform.color} hover:bg-${platform.color.replace('600', '700')} rounded-full flex items-center justify-center text-white transition-colors hover-scale`;
+                    a.innerHTML = `<i class="${platform.icon} text-xl"></i>`;
+                    a.target = '_blank';
+                    socialContainer.appendChild(a);
+                }
+            });
+        }
+
+        function updateFooter() {
+            const org = SITE_CONFIG.organization;
+            const contact = SITE_CONFIG.contact;
+            
+            document.getElementById('footer-logo').textContent = SITE_CONFIG.theme.logoText;
+            document.getElementById('footer-title').textContent = org.name.toUpperCase();
+            document.getElementById('footer-description').textContent = `
+                Bersama-sama merayakan 80 tahun kemerdekaan Indonesia dengan semangat gotong royong, 
+                persatuan, dan cinta tanah air. Mewujudkan Indonesia yang bersatu, berdaulat, sejahtera, dan maju.
+            `;
+            
+            document.getElementById('footer-contact').innerHTML = `
+                <p><i class="fas fa-map-marker-alt mr-2"></i>${contact.address}, ${contact.city}</p>
+                <p><i class="fas fa-envelope mr-2"></i>${contact.email}</p>
+            `;
+
+            document.getElementById('footer-info').innerHTML = `
+                <li><i class="fas fa-trophy mr-2 text-yellow-400"></i>Perlombaan: ${SITE_CONFIG.events.competition.date}</li>
+                <li><i class="fas fa-walking mr-2 text-green-400"></i>Jalan Sehat: ${SITE_CONFIG.events.healthWalk.date}</li>
+                <li><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i>Lokasi: ${SITE_CONFIG.events.competition.location}</li>
+                <li><i class="fas fa-phone mr-2 text-purple-400"></i>Info: ${contact.phone}</li>
+            `;
+
+            document.getElementById('footer-copyright').textContent = `© 2025 ${org.name}. Dibuat dengan ❤️ untuk Kemerdekaan Indonesia ke-80`;
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function openGoogleMaps() {
+            const coords = SITE_CONFIG.contact.coordinates;
+            const url = `https://www.google.com/maps?q=${coords.lat},${coords.lng}`;
+            window.open(url, '_blank');
+        }
+
+        function initializeEventListeners() {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                offset: 100
+            });
+
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Smooth Scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Gallery Modal
+            document.querySelectorAll('.gallery-item').forEach(img => {
+                img.addEventListener('click', function() {
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4';
+                    modal.innerHTML = `
+                        <div class="max-w-4xl max-h-full">
+                            <img src="${this.src}" alt="${this.alt}" class="max-w-full max-h-full object-contain rounded-lg">
+                            <button class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                    
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                });
+            });
+
+            // Navigation active state
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('nav a[href^="#"]');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (scrollY >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-merah-indonesia', 'font-semibold');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('text-merah-indonesia', 'font-semibold');
+                    }
+                });
+            });
+        }
+
+        function initMap() {
+            const coords = SITE_CONFIG.contact.coordinates;
+            const org = SITE_CONFIG.organization;
+
+            const map = L.map('map').setView([coords.lat, coords.lng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const customIcon = L.divIcon({
+                html: `<div style="background-color: ${SITE_CONFIG.theme.primaryColor}; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">${SITE_CONFIG.theme.logoText}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker([coords.lat, coords.lng], { icon: customIcon }).addTo(map);
+            
+            marker.bindPopup(`
+                <div style="text-align: center; padding: 10px;">
+                    <h3 style="color: ${SITE_CONFIG.theme.primaryColor}; margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">HUT RI ke-80 ${org.name}</h3>
+                    <p style="margin: 0 0 8px 0; font-size: 14px;">${SITE_CONFIG.contact.address}</p>
+                    <p style="margin: 0; font-size: 12px; color: #666;">📅 17 & 24 Agustus 2025</p>
+                </div>
+            `).openPopup();
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setTimeout(initMap, 1000);
+        });
+    </script>
+</body>
+</html>
